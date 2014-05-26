@@ -10,3 +10,4 @@
 #import "NSObject+IDPOCExtensions.h"
 #import "NSString+IDPExtensions.h"
 #import "IDPMath.h"
+#import "IDPObject.h"

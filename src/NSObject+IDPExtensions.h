@@ -15,4 +15,7 @@
 
 - (void)baseInit;
 
+- (void)performSelector:(SEL)selector withObjects:(id<NSObject>)firstObject, ...
+	NS_REQUIRES_NIL_TERMINATION;
+
 @end
