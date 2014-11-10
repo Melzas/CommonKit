@@ -7,6 +7,7 @@
 //
 
 #import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
 
 #pragma mark -
 #pragma mark Cocoa Macros
