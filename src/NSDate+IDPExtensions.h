@@ -8,40 +8,40 @@
 
 #import <Foundation/Foundation.h>
 
-static  NSString *const IDPDateTimeFormateString  =   @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
+static 	const NSUInteger 	kIDPDaysInWeek 		=	7;
+static  NSString *const 	IDPDateTimeFormat 	=   @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'";
 
 @interface NSDate (IDPExtensions)
 
-+ (NSInteger)numberOfDaysInCurrentMonth;
-+ (NSInteger)numberOfDaysInMonthForDate:(NSDate *)date;
-
-+ (NSInteger)numberOfDaysFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
-
-+ (NSDate *)day:(NSInteger)day ofMonthForDate:(NSDate *)date;
-+ (NSDate *)lastDayOfMonthForDate:(NSDate *)date;
-
-+ (NSDate *)dayOfCurrentMonth:(NSInteger)day;
-+ (NSDate *)lastDayOfCurrentMonth;
-
-+ (NSDate *)midnightDateForDate:(NSDate *)date;
-
-+ (NSDate *)dateByAddingDays:(NSInteger)days toDate:(NSDate *)date;
-
-+ (NSString *)weekdayAtDay:(NSInteger)day;
-+ (NSInteger)dayOfWeek:(NSString *)day;
-
-+ (NSDate *)dateFromString:(NSString *)dateString withStringFormate:(NSString *)stringFromate;
-- (NSString *)dateToStringWithFormat:(NSString *)stringFromate;
-
 - (NSDateComponents *)components:(NSUInteger)unitFlags;
 
+- (NSInteger)year;
+- (NSInteger)month;
+- (NSInteger)weekOfMonth;
+- (NSInteger)weekday;
+- (NSInteger)day;
+
+- (NSDate *)beginningOfMonth;
+- (NSDate *)endOfMonth;
+- (NSDate *)beginningOfWeek;
+- (NSDate *)endOfWeek;
+
++ (NSInteger)numberOfDaysInCurrentMonth;
++ (NSInteger)numberOfDaysInMonthForDate:(NSDate *)date;
++ (NSInteger)numberOfDaysFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate;
 - (NSInteger)numberOfDaysToDate:(NSDate *)toDate;
 
-- (NSDate *)dateByAddingDays:(NSInteger)days;
++ (NSDate *)day:(NSInteger)day ofMonthForDate:(NSDate *)date;
++ (NSDate *)dayOfCurrentMonth:(NSInteger)day;
+
++ (NSDate *)midnightDateForDate:(NSDate *)date;
 - (NSDate *)midnightDate;
 
-- (NSInteger)day;
-- (NSString *)weekday;
-- (NSInteger)dayOfWeek;
++ (NSDate *)dateByAddingDays:(NSInteger)days toDate:(NSDate *)date;
+- (NSDate *)dateByAddingDays:(NSInteger)days;
+
++ (NSDate *)dateFromString:(NSString *)dateString withStringFormat:(NSString *)stringFromat;
+- (NSString *)dateToStringWithFormat:(NSString *)stringFromate;
+
 
 @end

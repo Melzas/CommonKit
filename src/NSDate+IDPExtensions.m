@@ -11,6 +11,99 @@
 
 @implementation NSDate (IDPExtensions)
 
+#pragma mark -
+#pragma mark Date Components
+
+- (NSDateComponents *)components:(NSUInteger)unitFlags {
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	
+	return [calendar components:unitFlags
+					   fromDate:self];
+}
+
+- (NSInteger)year {
+	NSUInteger flags = NSCalendarUnitYear;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.year;
+}
+
+- (NSInteger)month {
+	NSUInteger flags = NSCalendarUnitMonth;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.month;
+}
+
+- (NSInteger)weekOfMonth {
+	NSUInteger flags = NSCalendarUnitWeekOfMonth;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.weekOfMonth;
+}
+
+- (NSInteger)weekday {
+	NSUInteger flags = NSCalendarUnitWeekday;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.weekday;
+}
+
+- (NSInteger)day {
+	NSUInteger flags = NSCalendarUnitDay;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.day;
+}
+
+#pragma mark -
+#pragma mark Beginning and End
+
+- (NSDate *)beginningOfMonth {
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSDateComponents *components = [self components:NSCalendarUnitYear | NSCalendarUnitMonth];
+	
+	return [calendar dateFromComponents:components];
+}
+- (NSDate *)endOfMonth {
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSDateComponents *components = [NSDateComponents new];
+	components.month = 1;
+	
+	NSDate *beginningOfNextMonth = [calendar dateByAddingComponents:components
+															 toDate:[self beginningOfMonth]
+															options:0];
+	
+	return [beginningOfNextMonth dateByAddingTimeInterval:-1];
+}
+
+- (NSDate *)beginningOfWeek {
+	NSCalendarUnit unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth;
+	unitFlags |= NSCalendarUnitWeekday | NSCalendarUnitDay;
+	NSDateComponents *components = [self components:unitFlags];
+	
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSInteger offset = (self.weekday - calendar.firstWeekday + kIDPDaysInWeek) % kIDPDaysInWeek;
+	components.day -= offset;
+	
+	return [calendar dateFromComponents:components];
+}
+
+- (NSDate *)endOfWeek {
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSDateComponents *components = [NSDateComponents new];
+	components.weekOfMonth = 1;
+	
+	NSDate *beginningOfNextWeek = [calendar dateByAddingComponents:components
+															toDate:[self beginningOfWeek]
+														   options:0];
+	
+	return [beginningOfNextWeek dateByAddingTimeInterval:-1];
+}
+
+#pragma mark -
+#pragma mark Time Intervals
+
 + (NSInteger)numberOfDaysInCurrentMonth {
 	NSDate *today = [NSDate date]; //Get a date object for today's date
 	return [self numberOfDaysInMonthForDate:today];
@@ -35,6 +128,13 @@
     return [difference day];	
 }
 
+- (NSInteger)numberOfDaysToDate:(NSDate *)toDate {
+	return [[self class] numberOfDaysFromDate:self toDate:toDate];
+}
+
+#pragma mark -
+#pragma mark Day
+
 + (NSDate *)day:(NSInteger)day ofMonthForDate:(NSDate *)date {
 	NSDateComponents *comps = [date components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)];	
 	
@@ -43,19 +143,12 @@
 	return [[NSCalendar currentCalendar] dateFromComponents:comps];
 }
 
-+ (NSDate *)lastDayOfMonthForDate:(NSDate *)date {
-	NSInteger days = [NSDate numberOfDaysInMonthForDate:date];
-	return [NSDate day:days ofMonthForDate:date];
-}
-
 + (NSDate *)dayOfCurrentMonth:(NSInteger)day {
 	return [self day:day ofMonthForDate:[NSDate date]];
 }
 
-+ (NSDate *)lastDayOfCurrentMonth {
-	NSInteger days = [NSDate numberOfDaysInCurrentMonth];
-	return [NSDate dayOfCurrentMonth:days];
-}
+#pragma mark -
+#pragma mark Midnight
 
 + (NSDate *)midnightDateForDate:(NSDate *)date {
 	NSDateComponents *comps = [date components:(NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit)];	
@@ -63,6 +156,13 @@
 	return [[NSCalendar currentCalendar] dateFromComponents:comps];
 
 }
+
+- (NSDate *)midnightDate {
+	return [[self class] midnightDateForDate:self];
+}
+
+#pragma mark -
+#pragma mark Arithmetic
 
 + (NSDate *)dateByAddingDays:(NSInteger)days toDate:(NSDate *)date {
 	NSDateComponents *comps = [NSDateComponents object];
@@ -74,23 +174,12 @@
 														options:0];
 }
 
-+ (NSString *)weekdayAtDay:(NSInteger)day {
-    NSString *weekday = nil;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.locale = [NSLocale currentLocale];
-    
-    weekday = [formatter.weekdaySymbols objectAtIndex:day - 1];
-    
-    [formatter release];
-    return weekday;
+- (NSDate *)dateByAddingDays:(NSInteger)days {
+	return [[self class] dateByAddingDays:days toDate:self];
 }
 
-+ (NSInteger)dayOfWeek:(NSString *)day {
-    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    formatter.locale = [NSLocale currentLocale];
-    
-    return [formatter.weekdaySymbols indexOfObject:day] + 1;
-}
+#pragma mark -
+#pragma mark Conversions
 
 + (NSDate *)dateFromString:(NSString *)dateString withStringFormate:(NSString *)stringFromate {
     NSDate *date = nil;
@@ -117,50 +206,6 @@
     [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
     return [formatter stringFromDate:self];
-}
-
-- (NSDateComponents *)components:(NSUInteger)unitFlags {
-	NSCalendar *calendar = [NSCalendar currentCalendar];
-	
-	return [calendar components:unitFlags 
-					   fromDate:self];
-}
-
-- (NSInteger)numberOfDaysToDate:(NSDate *)toDate {
-	return [[self class] numberOfDaysFromDate:self toDate:toDate];
-}
-
-- (NSDate *)dateByAddingDays:(NSInteger)days {
-	return [[self class] dateByAddingDays:days toDate:self];
-}
-
-- (NSDate *)midnightDate {
-	return [[self class] midnightDateForDate:self];
-}
-
-- (NSInteger)day {
-    NSUInteger flags = NSDayCalendarUnit;
-    NSDateComponents *components = [self components:flags];
-    return components.day;
-}
-
-- (NSString *)weekday {
-    NSString *weekday = nil;
-    
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.locale = [NSLocale currentLocale];
-    NSDateComponents *components = [self components:NSWeekdayCalendarUnit];
-    
-    weekday = [formatter.weekdaySymbols objectAtIndex:(components.weekday-1)];
-    
-    [formatter release];
-    return weekday;
-}
-
-- (NSInteger)dayOfWeek {
-    NSUInteger flags = NSWeekdayCalendarUnit;
-    NSDateComponents *components = [self components:flags];
-    return components.weekday;
 }
 
 @end
