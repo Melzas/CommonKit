@@ -65,6 +65,7 @@
 	
 	return [calendar dateFromComponents:components];
 }
+
 - (NSDate *)endOfMonth {
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDateComponents *components = [NSDateComponents new];
@@ -181,14 +182,14 @@
 #pragma mark -
 #pragma mark Conversions
 
-+ (NSDate *)dateFromString:(NSString *)dateString withStringFormate:(NSString *)stringFromate {
++ (NSDate *)dateFromString:(NSString *)dateString withStringFormat:(NSString *)stringFromat {
     NSDate *date = nil;
     
     NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
     NSLocale *locate = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB_POSIX"] autorelease];
     
     [formatter setLocale:locate];
-    [formatter setDateFormat:stringFromate];
+    [formatter setDateFormat:stringFromat];
     [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
     
     // Convert the RFC 3339 date time string to an NSDate.
