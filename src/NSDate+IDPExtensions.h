@@ -43,5 +43,7 @@ static  NSString *const 	IDPDateTimeFormat 	=   @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'
 + (NSDate *)dateFromString:(NSString *)dateString withStringFormat:(NSString *)stringFromat;
 - (NSString *)dateToStringWithFormat:(NSString *)stringFromate;
 
+- (NSString *)monthName;
+- (NSString *)monthNameStandAlone;
 
 @end

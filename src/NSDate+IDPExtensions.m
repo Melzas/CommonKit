@@ -209,4 +209,21 @@
     return [formatter stringFromDate:self];
 }
 
+#pragma mark -
+#pragma mark Month Name
+
+- (NSString *)monthName {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setDateFormat:@"MMMM"];
+	
+	return [dateFormatter stringFromDate:self];
+}
+
+- (NSString *)monthNameStandAlone {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setDateFormat:@"LLLL"];
+	
+	return [dateFormatter stringFromDate:self];
+}
+
 @end
