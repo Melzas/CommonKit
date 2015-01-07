@@ -56,6 +56,27 @@
 	return components.day;
 }
 
+- (NSInteger)hour {
+	NSUInteger flags = NSCalendarUnitHour;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.hour;
+}
+
+- (NSInteger)minute {
+	NSUInteger flags = NSCalendarUnitMinute;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.minute;
+}
+
+- (NSInteger)second {
+	NSUInteger flags = NSCalendarUnitSecond;
+	NSDateComponents *components = [self components:flags];
+	
+	return components.second;
+}
+
 #pragma mark -
 #pragma mark Beginning and End
 

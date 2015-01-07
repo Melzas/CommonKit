@@ -20,6 +20,9 @@ static  NSString *const 	IDPDateTimeFormat 	=   @"yyyy'-'MM'-'dd'T'HH':'mm':'ss'
 - (NSInteger)weekOfMonth;
 - (NSInteger)weekday;
 - (NSInteger)day;
+- (NSInteger)hour;
+- (NSInteger)minute;
+- (NSInteger)second;
 
 - (NSDate *)beginningOfMonth;
 - (NSDate *)endOfMonth;
