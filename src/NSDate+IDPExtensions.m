@@ -219,13 +219,9 @@
     return date;
 }
 
-- (NSString *)dateToStringWithFormat:(NSString *)stringFromate {
+- (NSString *)dateToStringWithFormat:(NSString *)stringFormat {
     NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
-    NSLocale *locate = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_GB_POSIX"] autorelease];
-    
-    [formatter setLocale:locate];
-    [formatter setDateFormat:stringFromate];
-    [formatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    [formatter setDateFormat:stringFormat];
     
     return [formatter stringFromDate:self];
 }
