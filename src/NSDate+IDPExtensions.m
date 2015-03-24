@@ -89,7 +89,7 @@
 
 - (NSDate *)endOfMonth {
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *components = [NSDateComponents new];
+	NSDateComponents *components = [NSDateComponents object];
 	components.month = 1;
 	
 	NSDate *beginningOfNextMonth = [calendar dateByAddingComponents:components
@@ -113,7 +113,7 @@
 
 - (NSDate *)endOfWeek {
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *components = [NSDateComponents new];
+	NSDateComponents *components = [NSDateComponents object];
 	components.weekOfMonth = 1;
 	
 	NSDate *beginningOfNextWeek = [calendar dateByAddingComponents:components
@@ -230,14 +230,14 @@
 #pragma mark Month Name
 
 - (NSString *)monthName {
-	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	NSDateFormatter *dateFormatter = [NSDateFormatter object];
 	[dateFormatter setDateFormat:@"MMMM"];
 	
 	return [dateFormatter stringFromDate:self];
 }
 
 - (NSString *)monthNameStandAlone {
-	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	NSDateFormatter *dateFormatter = [NSDateFormatter object];
 	[dateFormatter setDateFormat:@"LLLL"];
 	
 	return [dateFormatter stringFromDate:self];
